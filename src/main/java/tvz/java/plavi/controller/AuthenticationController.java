@@ -1,6 +1,7 @@
 package tvz.java.plavi.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -8,6 +9,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.web.bind.annotation.*;
 import tvz.java.plavi.model.dto.UserLoginRequest;
+import tvz.java.plavi.model.entity.User;
+import tvz.java.plavi.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,11 +24,13 @@ public class AuthenticationController {
 
     private final LogoutHandler logoutHandler;
     private final AuthenticationManager authenticationManager;
+    private final UserService userService;
 
     @Autowired
-    public AuthenticationController(LogoutHandler logoutHandler, AuthenticationManager authenticationManager) {
+    public AuthenticationController(LogoutHandler logoutHandler, AuthenticationManager authenticationManager, UserService userService) {
         this.logoutHandler = logoutHandler;
         this.authenticationManager = authenticationManager;
+        this.userService = userService;
     }
 
     @CrossOrigin
@@ -45,6 +50,17 @@ public class AuthenticationController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
             logoutHandler.logout(request, response, auth);
+        }
+    }
+
+    @GetMapping("/getLoggedUser")
+    public User getClient() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication != null && authentication.isAuthenticated()
+                && !(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)){
+            return userService.getUserByUsername(authentication.getName());
+        } else {
+            return new User();
         }
     }
 }
