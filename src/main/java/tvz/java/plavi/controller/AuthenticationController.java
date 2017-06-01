@@ -35,14 +35,14 @@ public class AuthenticationController {
 
     @CrossOrigin
     @PostMapping("/login")
-    public String login(@RequestBody UserLoginRequest user) {
+    public User login(@RequestBody UserLoginRequest user) {
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(),
                 user.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         if (authenticate.isAuthenticated()) {
-            return "Successfull";
+            return userService.getUserByUsername(authenticate.getName());
         }
-        return "Unsuccessfull";
+        return new User();
     }
 
     @GetMapping("/logout")
