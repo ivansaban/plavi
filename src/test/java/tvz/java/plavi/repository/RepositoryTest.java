@@ -37,6 +37,8 @@ public class RepositoryTest {
         userRepository.deleteAll();
         assertEquals(0, userRepository.count());
         User user = new User();
+        user.setFirstname("Ante");
+        user.setLastname("Antić");
         user.setUsername("test");
         user.setPassword("pass");
         entityManager.persist(user);

@@ -8,6 +8,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.web.bind.annotation.*;
+import tvz.java.plavi.mapper.UserMapper;
+import tvz.java.plavi.model.dto.LoggedUser;
 import tvz.java.plavi.model.dto.UserLoginRequest;
 import tvz.java.plavi.model.entity.User;
 import tvz.java.plavi.service.UserService;
@@ -35,17 +37,17 @@ public class AuthenticationController {
 
     @CrossOrigin
     @PostMapping("/login")
-    public User login(@RequestBody UserLoginRequest user) {
+    public LoggedUser login(@RequestBody UserLoginRequest user) {
         try{
             Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(),
                     user.getPassword()));
             SecurityContextHolder.getContext().setAuthentication(authenticate);
             if (authenticate.isAuthenticated()) {
-                return userService.getUserByUsername(authenticate.getName());
+                return UserMapper.mapUser(userService.getUserByUsername(authenticate.getName()));
             }
-            return new User();
+            return new LoggedUser();
         } catch(Exception e) {
-            return new User();
+            return new LoggedUser();
         }
     }
 
@@ -58,13 +60,13 @@ public class AuthenticationController {
     }
 
     @GetMapping("/getLoggedUser")
-    public User getClient() {
+    public LoggedUser getClient() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(authentication != null && authentication.isAuthenticated()
                 && !(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)){
-            return userService.getUserByUsername(authentication.getName());
+            return UserMapper.mapUser(userService.getUserByUsername(authentication.getName()));
         } else {
-            return new User();
+            return new LoggedUser();
         }
     }
 }

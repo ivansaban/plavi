@@ -18,8 +18,12 @@ public class ModelTest {
     @Test
     public void UserTest() {
         User user = new User();
+        user.setFirstname("Ante");
+        user.setLastname("Antić");
         user.setUsername("test");
         user.setPassword("pass");
+        assertEquals("Ante", user.getFirstname());
+        assertEquals("Antić", user.getLastname());
         assertEquals("test", user.getUsername());
         assertEquals("pass", user.getPassword());
     }

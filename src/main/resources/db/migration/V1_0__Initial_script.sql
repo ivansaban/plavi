@@ -9,6 +9,8 @@ default character set = utf8;
 
 create table if not exists users(
   id int primary key auto_increment,
+  firstname varchar(45) unique not null,
+  lastname varchar(45) unique not null,
   username varchar(45) unique not null,
   password varchar(45) not null,
   role_id int,

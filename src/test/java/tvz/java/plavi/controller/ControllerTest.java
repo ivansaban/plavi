@@ -61,7 +61,7 @@ public class ControllerTest {
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andReturn();
 
-        String expected = "{\"id\":1,\"username\":\"user\",\"password\":\"pass\",\"role\":{\"id\":1,\"name\":\"USER\"}}";
+        String expected = "{\"firstname\":\"Pero\",\"lastname\":\"Perić\",\"username\":\"user\",\"role\":{\"id\":1,\"name\":\"USER\"}}";
         JSONAssert.assertEquals(expected, mvcResult.getResponse().getContentAsString(), true);
     }
 
@@ -73,7 +73,7 @@ public class ControllerTest {
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andReturn();
 
-        String expected = "{\"id\":1,\"username\":\"user\",\"password\":\"pass\",\"role\":{\"id\":1,\"name\":\"USER\"}}";
+        String expected = "{\"firstname\":\"Pero\",\"lastname\":\"Perić\",\"username\":\"user\",\"role\":{\"id\":1,\"name\":\"USER\"}}";
         JSONAssert.assertEquals(expected, mvcResult.getResponse().getContentAsString(), true);
     }
 
