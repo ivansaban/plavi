@@ -7,4 +7,5 @@ import tvz.java.plavi.model.entity.Role;
  * Created by NIS on 28.5.2017..
  */
 public interface RoleRepository extends CrudRepository<Role, Long> {
+    Role findByName(String name);
 }

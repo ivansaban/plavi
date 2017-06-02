@@ -28,21 +28,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-            .antMatchers("/api/login").permitAll()
-            .antMatchers(HttpMethod.OPTIONS, "/**").permitAll() //enable CORS preflight
-            .anyRequest().authenticated()
-            .and()
+                .antMatchers("/api/**").permitAll()
+                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll() //enable CORS preflight
+                .anyRequest().authenticated()
+                .and()
             .logout()
-            .permitAll()
-            .and()
+                .permitAll()
+                .and()
             .cors().disable()
             .csrf().disable();
     }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        /*auth.inMemoryAuthentication()
-            .withUser("user").password("pass").roles("USER");*/
         auth.userDetailsService(userDetailsService);
     }
 
