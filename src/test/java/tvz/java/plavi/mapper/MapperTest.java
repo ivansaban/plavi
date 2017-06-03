@@ -34,6 +34,6 @@ public class MapperTest {
         assertEquals("Ante", loggedUser.getFirstname());
         assertEquals("Antić", loggedUser.getLastname());
         assertEquals("test", loggedUser.getUsername());
-        assertEquals("TEST", loggedUser.getRole().getName());
+        assertEquals("TEST", loggedUser.getRole());
     }
 }

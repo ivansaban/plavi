@@ -1,6 +1,8 @@
 package tvz.java.plavi.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -37,18 +39,18 @@ public class AuthenticationController {
 
     @CrossOrigin
     @PostMapping("/login")
-    public LoggedUser login(@RequestBody UserLoginRequest user) {
-        try{
+    public ResponseEntity<?> login(@RequestBody UserLoginRequest user) {
+        try {
             Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(),
                     user.getPassword()));
             SecurityContextHolder.getContext().setAuthentication(authenticate);
             if (authenticate.isAuthenticated()) {
-                return UserMapper.mapUser(userService.getUserByUsername(authenticate.getName()));
+                return new ResponseEntity<LoggedUser>(UserMapper.mapUser(userService.getUserByUsername(authenticate.getName())), HttpStatus.OK);
             }
-            return new LoggedUser();
-        } catch(Exception e) {
-            return new LoggedUser();
+        } catch (Exception e) {
+            return new ResponseEntity<String>("Bad Credentials", HttpStatus.FORBIDDEN);
         }
+        return new ResponseEntity<String>("Not Found", HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/logout")
@@ -60,13 +62,13 @@ public class AuthenticationController {
     }
 
     @GetMapping("/getLoggedUser")
-    public LoggedUser getClient() {
+    public ResponseEntity<?> getClient() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(authentication != null && authentication.isAuthenticated()
                 && !(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)){
-            return UserMapper.mapUser(userService.getUserByUsername(authentication.getName()));
+            return new ResponseEntity<LoggedUser>(UserMapper.mapUser(userService.getUserByUsername(authentication.getName())), HttpStatus.OK);
         } else {
-            return new LoggedUser();
+            return new ResponseEntity<String>("Not Found", HttpStatus.NOT_FOUND);
         }
     }
 }

@@ -12,7 +12,7 @@ public class UserMapper {
         loggedUser.setFirstname(user.getFirstname());
         loggedUser.setLastname(user.getLastname());
         loggedUser.setUsername(user.getUsername());
-        loggedUser.setRole(user.getRole());
+        loggedUser.setRole(user.getRole().getName());
 
         return loggedUser;
     }
