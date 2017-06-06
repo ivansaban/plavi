@@ -10,9 +10,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.web.bind.annotation.*;
-import tvz.java.plavi.mapper.UserMapper;
-import tvz.java.plavi.model.dto.LoggedUser;
+import tvz.java.plavi.dao.RoleRepository;
+import tvz.java.plavi.dao.UserRepository;
 import tvz.java.plavi.model.dto.UserLoginRequest;
+import tvz.java.plavi.model.entity.Role;
 import tvz.java.plavi.model.entity.User;
 import tvz.java.plavi.service.UserService;
 
@@ -31,6 +32,12 @@ public class AuthenticationController {
     private final UserService userService;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
     public AuthenticationController(LogoutHandler logoutHandler, AuthenticationManager authenticationManager, UserService userService) {
         this.logoutHandler = logoutHandler;
         this.authenticationManager = authenticationManager;
@@ -45,7 +52,7 @@ public class AuthenticationController {
                     user.getPassword()));
             SecurityContextHolder.getContext().setAuthentication(authenticate);
             if (authenticate.isAuthenticated()) {
-                return new ResponseEntity<LoggedUser>(UserMapper.mapUser(userService.getUserByUsername(authenticate.getName())), HttpStatus.OK);
+                return new ResponseEntity<User>(userService.getUserByUsername(authenticate.getName()), HttpStatus.OK);
             }
         } catch (Exception e) {
             return new ResponseEntity<String>("Bad Credentials", HttpStatus.FORBIDDEN);
@@ -66,7 +73,7 @@ public class AuthenticationController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(authentication != null && authentication.isAuthenticated()
                 && !(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)){
-            return new ResponseEntity<LoggedUser>(UserMapper.mapUser(userService.getUserByUsername(authentication.getName())), HttpStatus.OK);
+            return new ResponseEntity<User>(userService.getUserByUsername(authentication.getName()), HttpStatus.OK);
         } else {
             return new ResponseEntity<String>("Not Found", HttpStatus.NOT_FOUND);
         }
