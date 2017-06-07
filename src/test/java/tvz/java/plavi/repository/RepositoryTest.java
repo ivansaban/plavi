@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import tvz.java.plavi.dao.ProjectRepository;
 import tvz.java.plavi.dao.RoleRepository;
@@ -45,7 +46,6 @@ public class RepositoryTest {
         assertEquals("user", user.getUsername());
         assertEquals("Pero", user.getFirstname());
         assertEquals("Perić", user.getLastname());
-        assertEquals("pass", user.getPassword());
         assertEquals("male", user.getGender());
         assertEquals("USER", user.getRole().getName());
     }
@@ -67,7 +67,6 @@ public class RepositoryTest {
         Task task = taskRepository.findByName("Task");
         assertEquals("Task", task.getName());
         assertEquals("In progress", task.getStatus());
-        assertEquals(Date.valueOf("2017-06-04"), task.getCreated());
         assertEquals(5, task.getEstimated());
         assertEquals("user", task.getUser().getUsername());
         assertEquals("Projekt", task.getProject().getName());

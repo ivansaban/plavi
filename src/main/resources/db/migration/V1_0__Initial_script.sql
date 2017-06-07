@@ -12,7 +12,7 @@ create table if not exists users(
   firstname varchar(45) not null,
   lastname varchar(45) not null,
   username varchar(45) unique not null,
-  password varchar(45) not null,
+  password varchar(200) not null,
   gender varchar(45) not null,
   role_id int not null,
   foreign key(role_id) references roles(id)

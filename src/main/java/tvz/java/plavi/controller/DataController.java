@@ -3,6 +3,7 @@ package tvz.java.plavi.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tvz.java.plavi.dao.*;
+import tvz.java.plavi.model.dto.TotalUsers;
 import tvz.java.plavi.model.dto.UserTasksCounter;
 import tvz.java.plavi.model.entity.Project;
 import tvz.java.plavi.model.entity.ProjectStakeholder;
@@ -68,5 +69,13 @@ public class DataController {
             userTasksCounters.add(new UserTasksCounter(user.getUsername(), user.getTasks().size()));
         }
         return userTasksCounters;
+    }
+
+    @GetMapping("/getAllUsers")
+    public TotalUsers getAllUsers() {
+        long allUsers = userRepository.count();
+        long maleUsers = userRepository.findByGender("male").size();
+        long femaleUsers = allUsers - maleUsers;
+        return new TotalUsers(allUsers, maleUsers, femaleUsers);
     }
 }
