@@ -14,5 +14,6 @@ public class UserTasksCounter {
 
     private String username;
     private int taskCount;
+    private float finishedPercentage;
 
 }

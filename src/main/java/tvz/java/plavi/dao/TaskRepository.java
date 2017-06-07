@@ -14,4 +14,5 @@ public interface TaskRepository extends CrudRepository<Task, Long> {
     Task findByName(String name);
     List<Task> findByUserAndProject(User user, Project project);
     List<Task> findByProjectAndStatus(Project project, String status);
+    List<Task> findByUserAndProjectAndStatus(User user, Project project, String status);
 }

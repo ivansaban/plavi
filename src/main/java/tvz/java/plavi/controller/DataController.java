@@ -66,7 +66,11 @@ public class DataController {
         }
         List<UserTasksCounter> userTasksCounters = new ArrayList<>();
         for (User user : users) {
-            userTasksCounters.add(new UserTasksCounter(user.getUsername(), user.getTasks().size()));
+            int taskCounter = user.getTasks().size();
+            int finishedTaskCounter = taskRepository.findByUserAndProjectAndStatus(user, project, "Finished").size();
+            float finishedPercentage = ((float)finishedTaskCounter / taskCounter) * 100.0f;
+            finishedPercentage = Math.round(finishedPercentage * 100.0f) / 100.0f;
+            userTasksCounters.add(new UserTasksCounter(user.getUsername(), taskCounter, finishedPercentage));
         }
         return userTasksCounters;
     }
