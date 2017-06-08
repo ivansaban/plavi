@@ -115,4 +115,44 @@ public class ControllerTest {
         mockMvc.perform(get("/api/logout").with(user("user").password("pass").roles("USER")))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    public void testGetProjects() throws Exception {
+        mockMvc.perform(get("/api/getProjects/1")
+                .contentType("application/json;charset=UTF-8"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=UTF-8"));
+    }
+
+    @Test
+    public void testGetTasks() throws Exception {
+        mockMvc.perform(get("/api/getTasks/1/1")
+                .contentType("application/json;charset=UTF-8"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=UTF-8"));
+    }
+
+    @Test
+    public void testGetProjectTasks() throws Exception {
+        mockMvc.perform(get("/api/getProjectTasks/1/Finished")
+                .contentType("application/json;charset=UTF-8"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=UTF-8"));
+    }
+
+    @Test
+    public void testGetProjectStakeholders() throws Exception {
+        mockMvc.perform(get("/api/getProjectStakeholders/1")
+                .contentType("application/json;charset=UTF-8"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=UTF-8"));
+    }
+
+    @Test
+    public void testGetAllUsers() throws Exception {
+        mockMvc.perform(get("/api/getAllUsers")
+                .contentType("application/json;charset=UTF-8"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=UTF-8"));
+    }
 }

@@ -8,4 +8,5 @@ import tvz.java.plavi.model.entity.Role;
  */
 public interface RoleRepository extends CrudRepository<Role, Long> {
     Role findByName(String name);
+    Role findById(Long id);
 }
