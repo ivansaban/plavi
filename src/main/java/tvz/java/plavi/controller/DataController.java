@@ -66,8 +66,8 @@ public class DataController {
         }
         List<UserTasksCounter> userTasksCounters = new ArrayList<>();
         for (User user : users) {
-            int taskCounter = user.getTasks().size();
-            int finishedTaskCounter = taskRepository.findByUserAndProjectAndStatus(user, project, "Finished").size();
+            long taskCounter = taskRepository.countByUserAndProject(user, project);
+            long finishedTaskCounter = taskRepository.countByUserAndProjectAndStatus(user, project, "Finished");
             float finishedPercentage = ((float)finishedTaskCounter / taskCounter) * 100.0f;
             finishedPercentage = Math.round(finishedPercentage * 100.0f) / 100.0f;
             userTasksCounters.add(new UserTasksCounter(user.getUsername(), taskCounter, finishedPercentage));
@@ -78,7 +78,7 @@ public class DataController {
     @GetMapping("/getAllUsers")
     public TotalUsers getAllUsers() {
         long allUsers = userRepository.count();
-        long maleUsers = userRepository.findByGender("male").size();
+        long maleUsers = userRepository.countByGender("male");
         long femaleUsers = allUsers - maleUsers;
         return new TotalUsers(allUsers, maleUsers, femaleUsers);
     }

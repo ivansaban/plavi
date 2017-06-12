@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class UserTasksCounter {
 
     private String username;
-    private int taskCount;
+    private long taskCount;
     private float finishedPercentage;
 
 }

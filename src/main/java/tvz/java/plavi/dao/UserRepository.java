@@ -11,5 +11,5 @@ import java.util.List;
 public interface UserRepository extends CrudRepository<User, Long>{
     User findByUsername(String username);
     User findById(Long id);
-    List<User> findByGender(String gender);
+    Long countByGender(String gender);
 }
