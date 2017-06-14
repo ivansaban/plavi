@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import tvz.java.plavi.dao.*;
 import tvz.java.plavi.model.dto.TotalUsers;
 import tvz.java.plavi.model.dto.UserAddRequest;
+import tvz.java.plavi.model.dto.UserEditRequest;
 import tvz.java.plavi.model.dto.UserTasksCounter;
 import tvz.java.plavi.model.entity.Project;
 import tvz.java.plavi.model.entity.ProjectStakeholder;
@@ -54,6 +55,16 @@ public class ManagmentController {
         user.setGender(userAddRequest.getGender());
         user.setPassword(passwordEncoder.encode(userAddRequest.getPassword()));
         user.setRole(roleRepository.findById(userAddRequest.getRoleId()));
+        userRepository.save(user);
+        return new ResponseEntity<String>(HttpStatus.OK);
+    }
+
+    @PutMapping("/editUser")
+    public ResponseEntity<?> editUser(@RequestBody UserEditRequest userEditRequest) {
+        User user = userRepository.findByUsername(userEditRequest.getUsername());
+        user.setFirstname(userEditRequest.getFirstname());
+        user.setLastname(userEditRequest.getLastname());
+        user.setGender(userEditRequest.getGender());
         userRepository.save(user);
         return new ResponseEntity<String>(HttpStatus.OK);
     }
