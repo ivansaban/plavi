@@ -1,3 +1,4 @@
+create schema if not exists plavi default character set utf8;
 use plavi;
 
 create table if not exists roles(

@@ -13,10 +13,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
+import tvz.java.plavi.dao.UserRepository;
 import tvz.java.plavi.model.dto.UserAddRequest;
+import tvz.java.plavi.model.dto.UserEditRequest;
+import tvz.java.plavi.model.entity.User;
+
 import javax.servlet.Filter;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.junit.Assert.*;
 
 /**
  * Created by NIS on 12.6.2017..
@@ -31,6 +36,9 @@ public class ManagementControllerTest {
 
     @Autowired
     private Filter springSecurityFilterChain;
+
+    @Autowired
+    private UserRepository userRepository;
 
     private MockMvc mockMvc;
 
@@ -60,5 +68,31 @@ public class ManagementControllerTest {
                 .contentType("application/json;charset=UTF-8")
                 .content(requestJson))
                 .andExpect(status().isOk());
+
+        User user = userRepository.findByUsername("test");
+        assertNotNull(user);
+    }
+
+    @Test
+    public void testEditUser() throws Exception {
+        UserEditRequest userEditRequest = new UserEditRequest();
+        userEditRequest.setUsername("user");
+        userEditRequest.setFirstname("Test");
+        userEditRequest.setLastname("Test");
+        userEditRequest.setGender("female");
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+        ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
+        String requestJson = ow.writeValueAsString(userEditRequest);
+
+        mockMvc.perform(put("/api/editUser")
+                .contentType("application/json;charset=UTF-8")
+                .content(requestJson))
+                .andExpect(status().isOk());
+
+        User user = userRepository.findByUsername("user");
+        assertEquals("Test", user.getFirstname());
+        assertEquals("Test", user.getLastname());
+        assertEquals("female", user.getGender());
     }
 }
