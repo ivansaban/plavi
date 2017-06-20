@@ -68,4 +68,12 @@ public class ManagmentController {
         userRepository.save(user);
         return new ResponseEntity<String>(HttpStatus.OK);
     }
+
+    @PutMapping(value = "/finishTask/{id}")
+    public ResponseEntity<?> finishTask(@PathVariable Long id) {
+        Task task = taskRepository.findOne(id);
+        task.setStatus("Finished");
+        taskRepository.save(task);
+        return new ResponseEntity<String>(HttpStatus.OK);
+    }
 }
