@@ -29,8 +29,7 @@ public class SeleniumTest extends Locomotive {
 
     @Test
     public void testSelenium() throws Exception {
-        String text = navigateTo("")
-                .setText(By.name("email"), "admin")
+        String text = setText(By.name("email"), "admin")
                 .setText(By.name("password"), "pass")
                 .click(By.xpath("//*[@id=\"loginbox\"]/div[2]/div[2]/form/button"))
                 .getText(By.xpath("//*[@id=\"profile-sidebar\"]/div[2]/div[2]/a/p[2]"));
@@ -56,6 +55,8 @@ public class SeleniumTest extends Locomotive {
         User user = userRepository.findByUsername("test");
         assertNotNull(user);
         userRepository.delete(user.getId());
+
+        driver.switchTo().alert().accept();
 
         click(By.xpath("//*[@id=\"profile-sidebar\"]/div[2]/div[2]/button"))
         .validateUrl("http://localhost:4200/login");
