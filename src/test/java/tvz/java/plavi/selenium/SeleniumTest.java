@@ -54,11 +54,21 @@ public class SeleniumTest extends Locomotive {
 
         User user = userRepository.findByUsername("test");
         assertNotNull(user);
-        userRepository.delete(user.getId());
+
 
         driver.switchTo().alert().accept();
 
         click(By.xpath("//*[@id=\"profile-sidebar\"]/div[2]/div[2]/button"))
         .validateUrl("http://localhost:4200/login");
+
+        setText(By.name("email"), "test")
+                .setText(By.name("password"), "pass")
+                .click(By.xpath("//*[@id=\"loginbox\"]/div[2]/div[2]/form/button"))
+                .getText(By.xpath("//*[@id=\"profile-sidebar\"]/div[2]/div[2]/a/p[2]"));
+
+        click(By.xpath("//*[@id=\"profile-sidebar\"]/div[2]/div[2]/button"))
+                .validateUrl("http://localhost:4200/login");
+
+        userRepository.delete(user.getId());
     }
 }

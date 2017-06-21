@@ -33,12 +33,6 @@ public class AuthenticationController {
     private final UserService userService;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
     public AuthenticationController(LogoutHandler logoutHandler, AuthenticationManager authenticationManager, UserService userService) {
         this.logoutHandler = logoutHandler;
         this.authenticationManager = authenticationManager;
