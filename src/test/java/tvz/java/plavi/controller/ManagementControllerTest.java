@@ -13,9 +13,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
+import tvz.java.plavi.dao.TaskRepository;
 import tvz.java.plavi.dao.UserRepository;
 import tvz.java.plavi.model.dto.UserAddRequest;
 import tvz.java.plavi.model.dto.UserEditRequest;
+import tvz.java.plavi.model.entity.Task;
 import tvz.java.plavi.model.entity.User;
 
 import javax.servlet.Filter;
@@ -39,6 +41,9 @@ public class ManagementControllerTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private TaskRepository taskRepository;
 
     private MockMvc mockMvc;
 
@@ -71,6 +76,11 @@ public class ManagementControllerTest {
 
         User user = userRepository.findByUsername("test");
         assertNotNull(user);
+
+        mockMvc.perform(post("/api/addUser")
+                .contentType("application/json;charset=UTF-8")
+                .content(requestJson))
+                .andExpect(status().isNotAcceptable());
     }
 
     @Test
@@ -94,5 +104,16 @@ public class ManagementControllerTest {
         assertEquals("Test", user.getFirstname());
         assertEquals("Test", user.getLastname());
         assertEquals("female", user.getGender());
+    }
+
+    @Test
+    public void testFinishTask() throws Exception {
+        mockMvc.perform(put("/api/finishTask/1")
+                .contentType("application/json;charset=UTF-8")
+                .content("{}"))
+                .andExpect(status().isOk());
+
+        Task task = taskRepository.findOne(1L);
+        assertEquals("Finished", task.getStatus());
     }
 }

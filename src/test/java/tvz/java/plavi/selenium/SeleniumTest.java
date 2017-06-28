@@ -6,6 +6,8 @@ import io.ddavison.conductor.Locomotive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
@@ -29,6 +31,8 @@ public class SeleniumTest extends Locomotive {
 
     @Test
     public void testSelenium() throws Exception {
+        driver.switchTo().window("").manage().window().maximize();
+
         String text = setText(By.name("email"), "admin")
                 .setText(By.name("password"), "pass")
                 .click(By.xpath("//*[@id=\"loginbox\"]/div[2]/div[2]/form/button"))
@@ -55,8 +59,9 @@ public class SeleniumTest extends Locomotive {
         User user = userRepository.findByUsername("test");
         assertNotNull(user);
 
-
-        driver.switchTo().alert().accept();
+        WebDriverWait wait = new WebDriverWait(driver, 5);
+        if (wait.until(ExpectedConditions.alertIsPresent()) != null)
+            driver.switchTo().alert().accept();
 
         click(By.xpath("//*[@id=\"profile-sidebar\"]/div[2]/div[2]/button"))
         .validateUrl("http://localhost:4200/login");

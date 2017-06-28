@@ -50,9 +50,9 @@ public class AuthenticationController {
                 return new ResponseEntity<User>(userService.getUserByUsername(authenticate.getName()), HttpStatus.OK);
             }
         } catch (Exception e) {
-            return new ResponseEntity<String>("Bad Credentials", HttpStatus.FORBIDDEN);
         }
-        return new ResponseEntity<String>("Not Found", HttpStatus.NOT_FOUND);
+
+        return new ResponseEntity<String>("Bad Credentials", HttpStatus.FORBIDDEN);
     }
 
     @GetMapping("/logout")

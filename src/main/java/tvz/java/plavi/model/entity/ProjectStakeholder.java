@@ -15,7 +15,6 @@ import java.io.Serializable;
 @Table(name="project_stakeholders")
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class ProjectStakeholder implements Serializable {
 	private static final long serialVersionUID = 1L;
 

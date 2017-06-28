@@ -16,7 +16,6 @@ import java.util.List;
 @Table(name="users")
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(exclude = {"tasks", "projectStakeholders"})
 @ToString(exclude = {"tasks", "projectStakeholders"})
 public class User implements Serializable{
