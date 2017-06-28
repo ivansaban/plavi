@@ -15,7 +15,6 @@ import java.sql.Date;
 @Table(name="tasks")
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class Task implements Serializable {
 	private static final long serialVersionUID = 1L;
 

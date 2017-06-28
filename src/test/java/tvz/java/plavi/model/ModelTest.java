@@ -7,13 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
-import tvz.java.plavi.model.entity.Project;
-import tvz.java.plavi.model.entity.Role;
-import tvz.java.plavi.model.entity.Task;
-import tvz.java.plavi.model.entity.User;
+import tvz.java.plavi.model.dto.TotalUsers;
+import tvz.java.plavi.model.dto.UserTasksCounter;
+import tvz.java.plavi.model.entity.*;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 
 /**
@@ -31,25 +31,47 @@ public class ModelTest {
         user.setUsername("test");
         user.setPassword("pass");
         user.setGender("male");
+        user.setTasks(new ArrayList<>());
+        user.setProjectStakeholders(new ArrayList<>());
         assertEquals("Ante", user.getFirstname());
         assertEquals("Antić", user.getLastname());
         assertEquals("test", user.getUsername());
         assertEquals("pass", user.getPassword());
         assertEquals("male", user.getGender());
+        assertNotNull(user.getTasks());
+        assertNotNull(user.getProjectStakeholders());
+
+        User user2 = new User();
+        assertFalse(user.equals(user2));
+        assertFalse(user.toString().equals(user2.toString()));
     }
 
     @Test
     public void RoleTest() {
         Role role = new Role();
         role.setName("test");
+        role.setUsers(new ArrayList<>());
         assertEquals("test", role.getName());
+        assertNotNull(role.getUsers());
+
+        Role role2 = new Role();
+        assertFalse(role.equals(role2));
+        assertFalse(role.toString().equals(role2.toString()));
     }
 
     @Test
     public void ProjectTest() {
         Project project = new Project();
         project.setName("test");
+        project.setTasks(new ArrayList<>());
+        project.setProjectStakeholders(new ArrayList<>());
         assertEquals("test", project.getName());
+        assertNotNull(project.getTasks());
+        assertNotNull(project.getProjectStakeholders());
+
+        Project project2 = new Project();
+        assertFalse(project.equals(project2));
+        assertFalse(project.toString().equals(project2.toString()));
     }
 
     @Test
@@ -63,5 +85,32 @@ public class ModelTest {
         assertEquals("finished", task.getStatus());
         assertEquals(1, task.getEstimated());
         assertEquals(Date.valueOf(LocalDate.now()), task.getCreated());
+    }
+
+    @Test
+    public void ProjectStakeholderTest() {
+        ProjectStakeholder projectStakeholder = new ProjectStakeholder();
+        projectStakeholder.setUser(new User());
+        projectStakeholder.setProject(new Project());
+        assertNotNull(projectStakeholder.getUser());
+        assertNotNull(projectStakeholder.getProject());
+    }
+
+    @Test
+    public void TotalUsersTest() {
+        TotalUsers totalUsers = new TotalUsers(2L, 1L, 1L);
+        totalUsers.setFemaleUsers(2L);
+        totalUsers.setAllUsers(3L);
+        assertEquals(3L, totalUsers.getAllUsers());
+        assertEquals(2L, totalUsers.getFemaleUsers());
+        assertEquals(1L, totalUsers.getMaleUsers());
+    }
+
+    @Test
+    public void UserTasksCounterTest() {
+        UserTasksCounter userTasksCounter = new UserTasksCounter("test", 1L, 100.0f);
+        userTasksCounter.setTaskCount(3L);
+        assertEquals("test", userTasksCounter.getUsername());
+        assertEquals(3L, userTasksCounter.getTaskCount());
     }
 }

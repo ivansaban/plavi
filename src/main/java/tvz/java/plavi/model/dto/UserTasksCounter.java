@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
  * Created by NIS on 28.5.2017..
  */
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 public class UserTasksCounter {
 

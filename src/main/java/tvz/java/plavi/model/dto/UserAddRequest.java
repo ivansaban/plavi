@@ -1,12 +1,14 @@
 package tvz.java.plavi.model.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import tvz.java.plavi.model.entity.Role;
 
 /**
  * Created by NIS on 28.5.2017..
  */
 @Data
+@NoArgsConstructor
 public class UserAddRequest {
 
     private String username;

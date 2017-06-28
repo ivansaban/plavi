@@ -9,14 +9,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
-import tvz.java.plavi.dao.ProjectRepository;
-import tvz.java.plavi.dao.RoleRepository;
-import tvz.java.plavi.dao.TaskRepository;
-import tvz.java.plavi.dao.UserRepository;
-import tvz.java.plavi.model.entity.Project;
-import tvz.java.plavi.model.entity.Role;
-import tvz.java.plavi.model.entity.Task;
-import tvz.java.plavi.model.entity.User;
+import tvz.java.plavi.dao.*;
+import tvz.java.plavi.model.entity.*;
+
 import java.sql.Date;
 
 /**
@@ -36,6 +31,9 @@ public class RepositoryTest {
 
     @Autowired
     private ProjectRepository projectRepository;
+
+    @Autowired
+    private ProjectStakeholderRepository projectStakeholderRepository;
 
     @Autowired
     private TaskRepository taskRepository;
@@ -70,5 +68,13 @@ public class RepositoryTest {
         assertEquals(5, task.getEstimated());
         assertEquals("user", task.getUser().getUsername());
         assertEquals("Projekt", task.getProject().getName());
+    }
+
+    @Test
+    public void projectStakeholderRepositoryTest() {
+        ProjectStakeholder projectStakeholder = projectStakeholderRepository.findOne(1L);
+        assertEquals(1L, projectStakeholder.getId(), 0L);
+        assertNotNull(projectStakeholder.getProject());
+        assertNotNull(projectStakeholder.getUser());
     }
 }

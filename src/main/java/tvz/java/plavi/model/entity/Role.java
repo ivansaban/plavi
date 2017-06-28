@@ -14,7 +14,6 @@ import java.util.List;
 @Table(name="roles")
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(exclude = "users")
 @ToString(exclude = "users")
 public class Role implements Serializable{
