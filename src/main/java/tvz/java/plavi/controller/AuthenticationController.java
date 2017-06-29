@@ -42,16 +42,22 @@ public class AuthenticationController {
     @CrossOrigin
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserLoginRequest user) {
+        boolean isAuth = false;
+        Authentication authenticate = null;
         try {
-            Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(),
+            authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(),
                     user.getPassword()));
             SecurityContextHolder.getContext().setAuthentication(authenticate);
             if (authenticate.isAuthenticated()) {
-                return new ResponseEntity<User>(userService.getUserByUsername(authenticate.getName()), HttpStatus.OK);
+                isAuth = true;
             }
         } catch (Exception e) {
+            isAuth = false;
         }
 
+        if (isAuth) {
+            return new ResponseEntity<User>(userService.getUserByUsername(authenticate.getName()), HttpStatus.OK);
+        }
         return new ResponseEntity<String>("Bad Credentials", HttpStatus.FORBIDDEN);
     }
 

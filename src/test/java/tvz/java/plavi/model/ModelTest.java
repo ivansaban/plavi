@@ -3,14 +3,11 @@ package tvz.java.plavi.model;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import tvz.java.plavi.model.dto.TotalUsers;
 import tvz.java.plavi.model.dto.UserTasksCounter;
 import tvz.java.plavi.model.entity.*;
-
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
